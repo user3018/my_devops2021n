@@ -239,6 +239,7 @@
 			<Role>Администратор</Role>
 			<Role>Бухгалтер</Role>
 			<CommonModule>Расчет</CommonModule>
+			<CommonModule>МодульОшибки</CommonModule>
 			<CommandGroup>Справочники</CommandGroup>
 			<CommandGroup>Документы</CommandGroup>
 			<CommandGroup>ПланыВидовХарактеристик</CommandGroup>
