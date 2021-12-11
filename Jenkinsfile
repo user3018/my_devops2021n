@@ -63,11 +63,12 @@ pipeline
                     }
                     catch (Exception Exc) {
                         currentBuild.result = 'UNSTABLE'                    }
-                    }
+                    }   
                 }
             }
         }
-
+    }
+}
         /*
         stage("Создание тестовой базы") {
             steps {
@@ -134,5 +135,3 @@ pipeline
                 }
             }
         */
-    }
-}
