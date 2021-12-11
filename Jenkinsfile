@@ -24,6 +24,15 @@ pipeline
         }
     }
     stages {
+        
+        stage("stage") {
+            bat " echo Сообщение из steps"
+            bat " echo Переменная envString = ${envString}"
+            script {
+                scannerHome = tool "sonar-scaner"
+            }
+        }
+        /*
         stage("Создание тестовой базы") {
             steps {
                 bat "chcp 65001\n vrunner init-dev --dt C:\\Train_04_20\\Template\\course.dt --db-user Администратор --src src/cf"
@@ -31,63 +40,63 @@ pipeline
             }
         }
 
-    stage("Синтаксический контроль") {
-            steps {
-                bat "chcp 65001\n vrunner syntax-check"
- 
+        stage("Синтаксический контроль") {
+                steps {
+                    bat "chcp 65001\n vrunner syntax-check"
+    
+                }
             }
-        }
 
 
-    stage("Дымовые тесты") {
-            steps {
-                script{
-                    try {
-                        bat "chcp 65001\n runner xunit"
-                    } catch(Exception Exc) {
-                         currentBuild.result = 'UNSTABLE'
+        stage("Дымовые тесты") {
+                steps {
+                    script{
+                        try {
+                            bat "chcp 65001\n runner xunit"
+                        } catch(Exception Exc) {
+                            currentBuild.result = 'UNSTABLE'
+                        }
                     }
+    
                 }
- 
             }
-        }
 
-    stage("vanessa") {
-            steps {
-                script{
-                    try {
-                        bat "chcp 65001\n runner vanessa"
-                    } catch(Exception Exc) {
-                         currentBuild.result = 'UNSTABLE'
+        stage("vanessa") {
+                steps {
+                    script{
+                        try {
+                            bat "chcp 65001\n runner vanessa"
+                        } catch(Exception Exc) {
+                            currentBuild.result = 'UNSTABLE'
+                        }
                     }
+    
                 }
- 
             }
-        }
 
-    stage("АПК") {
-            steps {
-                script{
-                    try {
-                        bat "chcp 65001\n runner run --ibconnection /FC:/Train_04_20/Template/ACC --db-user \"\" --db-pwd \"\"  --command \"acc.catalog=${WORKSPACE};acc.propertiesPaths=./tools/acc-export/acc.properties;\" --execute \"./tools/acc-export/acc-export.epf\" --ordinaryapp=1"
-                    } catch(Exception Exc) {
-                         currentBuild.result = 'UNSTABLE'
+        stage("АПК") {
+                steps {
+                    script{
+                        try {
+                            bat "chcp 65001\n runner run --ibconnection /FC:/Train_04_20/Template/ACC --db-user \"\" --db-pwd \"\"  --command \"acc.catalog=${WORKSPACE};acc.propertiesPaths=./tools/acc-export/acc.properties;\" --execute \"./tools/acc-export/acc-export.epf\" --ordinaryapp=1"
+                        } catch(Exception Exc) {
+                            currentBuild.result = 'UNSTABLE'
+                        }
                     }
+    
                 }
- 
             }
-        }
 
-    stage("Sonar") {
-            steps {
-                script{
-                       scannerHome = tool 'sonar-scanner'
+        stage("Sonar") {
+                steps {
+                    script{
+                        scannerHome = tool 'sonar-scanner'
+                    }
+                withSonarQubeEnv ("sonar") {
+                        bat "${scannerHome}/bin/sonar-scanner -D sonar.login=b398eb45331f9fc123b352b4cf96d320cfeef8cd -D sonar.projectVersion=${BUILD_ID}"
+                    }  
                 }
-            withSonarQubeEnv ("sonar") {
-                    bat "${scannerHome}/bin/sonar-scanner -D sonar.login=b398eb45331f9fc123b352b4cf96d320cfeef8cd -D sonar.projectVersion=${BUILD_ID}"
-                }  
             }
-        }
-
+        */
     }
 }
