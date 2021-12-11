@@ -10,9 +10,13 @@ pipeline
  
     post {
         always {
+            allure includeProperties: false, jdk: '', results: [[path: 'out/syntax-check/allure']]
+            junit allowEmptyResults: true, testResults: 'out/syntax-check/junit/junit.xml'
+            /*
             allure includeProperties: false, jdk: '', results: [[path: 'out/syntax-check/allure'], [path: 'out/allure/smoke'], [path: 'out/allure']]
             junit allowEmptyResults: true, testResults: 'out/syntax-check/junit/junit.xml'
             junit allowEmptyResults: true, testResults: 'out/*.xml'
+            */
         }
     
         failure {
@@ -37,10 +41,16 @@ pipeline
         }
         */
 
-        stage("Создание тестовой базы") {
+        stage("Создание тестовой базы #2") {
             steps {
                 //bat "chcp 65001\n vrunner init-dev --dt \"..\\..\\Bases\\Курс DevOps\\Backups\\s_2021-12-11_1621.dt\" --db-user Администратор --src src/cf"
                 bat "chcp 65001\n vrunner init-dev --dt \"D:\\Anatoly\\Bases\\Курс DevOps\\Backups\\s_2021-12-11_1621.dt\" --db-user Администратор --src src/cf"
+            }
+        }
+
+        stage("Синтаксический контроль #2") {
+            steps {
+                bat "chcp 65001\n vrunner vrunner syntax-check"
             }
         }
 
