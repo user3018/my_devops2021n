@@ -56,6 +56,7 @@ pipeline
             }
         }
 
+        /*
         stage("Дымовые тесты #2") {
             steps {
                 script {
@@ -68,6 +69,8 @@ pipeline
                 }
             }
         }
+        */
+        
     }
 }
 
