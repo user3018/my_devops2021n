@@ -43,6 +43,13 @@ pipeline
         }
         */
 
+        stage("Очистка отчетов") {
+            steps {
+                bat " del /Q /S allure-report" 
+                bat " del /Q /S out"
+            }
+        }
+
         stage("Создание тестовой базы #2") {
             steps {
                 //bat "chcp 65001\n vrunner init-dev --dt \"..\\..\\Bases\\Курс DevOps\\Backups\\s_2021-12-11_1621.dt\" --db-user Администратор --src src/cf"
