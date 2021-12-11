@@ -50,7 +50,7 @@ pipeline
 
         stage("Синтаксический контроль #2") {
             steps {
-                bat "chcp 65001\n vrunner vrunner syntax-check"
+                bat "chcp 65001\n vrunner syntax-check"
             }
         }
 
