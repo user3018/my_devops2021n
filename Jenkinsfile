@@ -113,7 +113,8 @@ pipeline
         stage("Сонаркуб") {
                 steps {
                     script{
-                        scannerHome = tool 'sonar-scaner'
+                        //scannerHome = tool 'sonar-scaner'
+                        scannerHome = tool name: 'sonar-scaner', type: 'hudson.plugins.sonar.SonarRunnerInstallation'
                     }
                 withSonarQubeEnv ("sonar") {
                         bat "${scannerHome}/bin/sonar-scanner -D sonar.login=b89b97f044bec3c32aa884f4940b6d2e78ac7bce -D sonar.projectVersion=${BUILD_ID}"
