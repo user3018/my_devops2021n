@@ -10,8 +10,9 @@ pipeline
  
     post {
         always {
-            allure includeProperties: false, jdk: '', results: [[path: 'out/syntax-check/allure']]
+            allure includeProperties: false, jdk: '', results: [[path: 'out/syntax-check/allure'], [path: 'out/smoke/allure/allure.xml']]
             junit allowEmptyResults: true, testResults: 'out/syntax-check/junit/junit.xml'
+            junit allowEmptyResults: true, testResults: 'out/smoke/junit/*.xml'
             /*
             allure includeProperties: false, jdk: '', results: [[path: 'out/syntax-check/allure'], [path: 'out/allure/smoke'], [path: 'out/allure']]
             junit allowEmptyResults: true, testResults: 'out/syntax-check/junit/junit.xml'
@@ -51,6 +52,19 @@ pipeline
         stage("Синтаксический контроль #2") {
             steps {
                 bat "chcp 65001\n vrunner syntax-check"
+            }
+        }
+
+        stage("Дымовые тесты #2") {
+            steps {
+                script {
+                    try {
+                        bat "chcp 65001\n vrunner xunit"
+                    } 
+                    catch (Exception Exc) {
+                        currentBuild.result = 'UNSTABLE'                    }
+                    }
+                }
             }
         }
 
