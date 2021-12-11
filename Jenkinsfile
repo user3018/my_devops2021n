@@ -78,7 +78,22 @@ pipeline
             }
         }
         */
-        
+
+        stage("Модульные тесты") {
+            steps {
+                script {
+                    try {
+                        bat """chcp 65001
+                        call vrunner compileepf tests tests
+                        call runner xunit --settings ./env-tests.json"""
+                    }
+                    catch (Exception Exc) {
+                        currentBuild.result = 'UNSTABLE'                    
+                    }
+                }
+            }
+        }
+
         /*
         stage("Тесты ванесса") {
             steps {
