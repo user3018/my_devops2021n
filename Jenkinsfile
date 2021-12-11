@@ -94,7 +94,6 @@ pipeline
         }
         */
 
-        /*
         stage("АПК") {
             steps {
                 script {
@@ -108,7 +107,6 @@ pipeline
                 }
             }
         }
-        */
 
         stage("Сонаркуб") {
                 steps {
