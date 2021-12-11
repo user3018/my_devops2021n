@@ -26,6 +26,7 @@ pipeline
     }
     stages {
 
+        /*
         stage("stage") {
             steps {
                 bat " echo Сообщение из steps"
@@ -35,6 +36,7 @@ pipeline
                 }
             }
         }
+        */
 
         /*
         stage("Очистка отчетов") {
