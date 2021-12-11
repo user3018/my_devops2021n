@@ -26,10 +26,12 @@ pipeline
     stages {
         
         stage("stage") {
-            bat " echo Сообщение из steps"
-            bat " echo Переменная envString = ${envString}"
-            script {
-                scannerHome = tool "sonar-scaner"
+            steps {
+                bat " echo Сообщение из steps"
+                bat " echo Переменная envString = ${envString}"
+                script {
+                    scannerHome = tool "sonar-scaner"
+                }
             }
         }
         /*
