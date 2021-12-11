@@ -11,7 +11,7 @@ pipeline
     post {
         always {
             //allure includeProperties: false, jdk: '', results: [[path: 'out/syntax-check/allure'], [path: 'out/smoke/allure/allure.xml']]
-            allure includeProperties: false, jdk: '', results: [[path: 'out/syntax-check/allure'], [path: 'out/smoke/allure']]
+            allure includeProperties: false, jdk: '', results: [[path: 'out/syntax-check/allure'], [path: 'out/smoke/allure'], [path: 'out/allure']]
             junit allowEmptyResults: true, testResults: 'out/syntax-check/junit/junit.xml'
             junit allowEmptyResults: true, testResults: 'out/smoke/junit/*.xml'
             /*
@@ -45,8 +45,8 @@ pipeline
 
         stage("Очистка отчетов") {
             steps {
-                bat " del /Q /S allure-report" 
-                bat " del /Q /S out"
+                bat "chcp 65001\n del /Q /S allure-report" 
+                bat "chcp 65001\n del /Q /S out"
             }
         }
 
@@ -79,6 +79,19 @@ pipeline
             }
         }
         */
+
+        stage("Тесты ванесса") {
+            steps {
+                script {
+                    try {
+                        bat "chcp 65001\n vrunner vanessa"
+                    }
+                    catch (Exception Exc) {
+                        currentBuild.result = 'UNSTABLE'                    
+                    }
+                }
+            }
+        }
 
     }
 }
