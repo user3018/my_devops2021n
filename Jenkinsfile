@@ -36,20 +36,22 @@ pipeline
             }
         }
 
+        /*
         stage("Очистка отчетов") {
             steps {
                 bat "chcp 65001\n del /Q /S allure-report" 
                 bat "chcp 65001\n del /Q /S out"
             }
         }
+        */
 
-        stage("Создание тестовой базы #2") {
+        stage("Создание тестовой базы") {
             steps {
                 bat "chcp 65001\n vrunner init-dev --dt \"D:\\Anatoly\\Bases\\Курс DevOps\\Backups\\s_2021-12-11_2015.dt\" --db-user Администратор --src src/cf"
             }
         }
 
-        stage("Синтаксический контроль #2") {
+        stage("Синтаксический контроль") {
             steps {
                 bat "chcp 65001\n vrunner syntax-check"
             }
