@@ -24,7 +24,8 @@ pipeline
         }
     }
     stages {
-        
+
+        /*        
         stage("stage") {
             steps {
                 bat " echo Сообщение из steps"
@@ -34,6 +35,14 @@ pipeline
                 }
             }
         }
+        */
+
+        stage("Создание тестовой базы") {
+            steps {
+                bat "chcp 65001\n vrunner init-dev --dt \"..\\..\\Bases\\Курс DevOps\\Backups\\s_2021-12-11_1621.dt\" --db-user Администратор --src src/cf"
+            }
+        }
+
         /*
         stage("Создание тестовой базы") {
             steps {
