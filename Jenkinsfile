@@ -98,7 +98,8 @@ pipeline
             steps {
                 script {
                     try {
-                        bat "chcp 65001\n runner run --ibconnection /FD:\Anatoly\Bases\АПК --db-user "Администратор" --db-pwd "" --ordinaryapp=1 --command "acc.catalog=${WORKSPACE};acc.propertiesPaths=.\tools\acc-export\acc.properties;" --execute ".\tools\acc-export\acc-export.epf" 
+                        //bat "chcp 65001\n runner run --ibconnection /FC:/Train_04_20/Template/ACC --db-user \"\" --db-pwd \"\"  --command \"acc.catalog=${WORKSPACE};acc.propertiesPaths=./tools/acc-export/acc.properties;\" --execute \"./tools/acc-export/acc-export.epf\" --ordinaryapp=1"
+                        bat "chcp 65001\n runner run --ibconnection /FD:/Anatoly/Bases/АПК --db-user \"Администратор\" --db-pwd \"\" --ordinaryapp=1 --command \"acc.catalog=${WORKSPACE};acc.propertiesPaths=./tools/acc-export/acc.properties;\" --execute \"./tools/acc-export/acc-export.epf"
                     }
                     catch (Exception Exc) {
                         currentBuild.result = 'UNSTABLE'                    
