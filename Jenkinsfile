@@ -50,11 +50,13 @@ pipeline
             }
         }
 
+        /*
         stage("Синтаксический контроль #2") {
             steps {
                 bat "chcp 65001\n vrunner syntax-check"
             }
         }
+        */
 
         /*
         stage("Дымовые тесты #2") {
@@ -70,7 +72,7 @@ pipeline
             }
         }
         */
-        
+
     }
 }
 
