@@ -10,16 +10,10 @@ pipeline
  
     post {
         always {
-            //allure includeProperties: false, jdk: '', results: [[path: 'out/syntax-check/allure'], [path: 'out/smoke/allure/allure.xml']]
             allure includeProperties: false, jdk: '', results: [[path: 'out/syntax-check/allure'], [path: 'out/smoke/allure'], [path: 'build/tests/allure']]
             junit allowEmptyResults: true, testResults: 'out/syntax-check/junit/junit.xml'
             junit allowEmptyResults: true, testResults: 'out/smoke/junit/*.xml'
             junit allowEmptyResults: true, testResults: 'build/tests/junit/*.xml'
-            /*
-            allure includeProperties: false, jdk: '', results: [[path: 'out/syntax-check/allure'], [path: 'out/allure/smoke'], [path: 'out/allure']]
-            junit allowEmptyResults: true, testResults: 'out/syntax-check/junit/junit.xml'
-            junit allowEmptyResults: true, testResults: 'out/*.xml'
-            */
         }
     
         failure {
@@ -32,7 +26,6 @@ pipeline
     }
     stages {
 
-        /*        
         stage("stage") {
             steps {
                 bat " echo Сообщение из steps"
@@ -42,7 +35,6 @@ pipeline
                 }
             }
         }
-        */
 
         stage("Очистка отчетов") {
             steps {
@@ -57,15 +49,12 @@ pipeline
             }
         }
 
-        /*
         stage("Синтаксический контроль #2") {
             steps {
                 bat "chcp 65001\n vrunner syntax-check"
             }
         }
-        */
 
-        /*
         stage("Дымовые тесты #2") {
             steps {
                 script {
@@ -78,17 +67,16 @@ pipeline
                 }
             }
         }
-        */
 
         stage("Модульные тесты") {
             steps {
                 script {
                     try {
+                        // комманда copy применена, т.к. после compileepf модуль обработки пустой
                         bat """chcp 65001
                         call vrunner compileepf tests tests
                         copy /Y "D:\\Anatoly\\Bases\\Курс DevOps\\Тест_ПростойТест.epf" "D:\\J\\workspace\\training\\tests\\Тест_ПростойТест.epf"
                         call runner xunit --settings ./env-tests.json"""
-                        //bat "chcp 65001\n copy /Y \"D:\\Anatoly\\Bases\\Курс DevOps\\Тест_ПростойТест.epf\" \"D:\\J\\workspace\\training\\tests\\Тест_ПростойТест.epf"
                     }
                     catch (Exception Exc) {
                         currentBuild.result = 'UNSTABLE'                    
@@ -97,7 +85,6 @@ pipeline
             }
         }
 
-        /*
         stage("Тесты ванесса") {
             steps {
                 script {
@@ -110,13 +97,11 @@ pipeline
                 }
             }
         }
-        */
 
         stage("АПК") {
             steps {
                 script {
                     try {
-                        //bat "chcp 65001\n runner run --ibconnection /FC:/Train_04_20/Template/ACC --db-user \"\" --db-pwd \"\"  --command \"acc.catalog=${WORKSPACE};acc.propertiesPaths=./tools/acc-export/acc.properties;\" --execute \"./tools/acc-export/acc-export.epf\" --ordinaryapp=1"
                         bat "chcp 65001\n runner run --ibconnection /FD:/Anatoly/Bases/АПК --db-user \"Администратор\" --db-pwd \"\" --ordinaryapp=1 --command \"acc.catalog=${WORKSPACE};acc.propertiesPaths=./tools/acc-export/acc.properties;\" --execute \"./tools/acc-export/acc-export.epf"
                     }
                     catch (Exception Exc) {
@@ -129,7 +114,6 @@ pipeline
         stage("Сонаркуб") {
                 steps {
                     script{
-                        //scannerHome = tool 'sonar-scaner'
                         scannerHome = tool name: 'sonar-scaner', type: 'hudson.plugins.sonar.SonarRunnerInstallation'
                     }
                 withSonarQubeEnv ("sonar") {
@@ -140,70 +124,3 @@ pipeline
 
     }
 }
-
-        /*
-        stage("Создание тестовой базы") {
-            steps {
-                bat "chcp 65001\n vrunner init-dev --dt C:\\Train_04_20\\Template\\course.dt --db-user Администратор --src src/cf"
- 
-            }
-        }
-
-        stage("Синтаксический контроль") {
-                steps {
-                    bat "chcp 65001\n vrunner syntax-check"
-    
-                }
-            }
-
-
-        stage("Дымовые тесты") {
-                steps {
-                    script{
-                        try {
-                            bat "chcp 65001\n runner xunit"
-                        } catch(Exception Exc) {
-                            currentBuild.result = 'UNSTABLE'
-                        }
-                    }
-    
-                }
-            }
-
-        stage("vanessa") {
-                steps {
-                    script{
-                        try {
-                            bat "chcp 65001\n runner vanessa"
-                        } catch(Exception Exc) {
-                            currentBuild.result = 'UNSTABLE'
-                        }
-                    }
-    
-                }
-            }
-
-        stage("АПК") {
-                steps {
-                    script{
-                        try {
-                            bat "chcp 65001\n runner run --ibconnection /FC:/Train_04_20/Template/ACC --db-user \"\" --db-pwd \"\"  --command \"acc.catalog=${WORKSPACE};acc.propertiesPaths=./tools/acc-export/acc.properties;\" --execute \"./tools/acc-export/acc-export.epf\" --ordinaryapp=1"
-                        } catch(Exception Exc) {
-                            currentBuild.result = 'UNSTABLE'
-                        }
-                    }
-    
-                }
-            }
-
-        stage("Sonar") {
-                steps {
-                    script{
-                        scannerHome = tool 'sonar-scanner'
-                    }
-                withSonarQubeEnv ("sonar") {
-                        bat "${scannerHome}/bin/sonar-scanner -D sonar.login=b398eb45331f9fc123b352b4cf96d320cfeef8cd -D sonar.projectVersion=${BUILD_ID}"
-                    }  
-                }
-            }
-        */
