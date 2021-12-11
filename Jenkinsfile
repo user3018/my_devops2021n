@@ -78,7 +78,8 @@ pipeline
             }
         }
         */
-
+        
+        /*
         stage("Тесты ванесса") {
             steps {
                 script {
@@ -91,6 +92,7 @@ pipeline
                 }
             }
         }
+        */
 
         stage("АПК") {
             steps {
