@@ -57,7 +57,7 @@ pipeline
             }
         }
 
-        stage("Дымовые тесты #2") {
+        stage("Дымовые тесты") {
             steps {
                 script {
                     try {
