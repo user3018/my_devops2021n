@@ -86,7 +86,7 @@ pipeline
                     try {
                         bat """chcp 65001
                         call vrunner compileepf tests tests
-                        copy /Y "D:\Anatoly\Bases\Курс DevOps\Тест_ПростойТест.epf" "D:\J\workspace\training\tests\Тест_ПростойТест.epf"
+                        copy /Y "D:/Anatoly/Bases/Курс DevOps/Тест_ПростойТест.epf" "D:/J/workspace/training/tests/Тест_ПростойТест.epf"
                         call runner xunit --settings ./env-tests.json"""
                         //bat "chcp 65001\n copy /Y \"D:\\Anatoly\\Bases\\Курс DevOps\\Тест_ПростойТест.epf\" \"D:\\J\\workspace\\training\\tests\\Тест_ПростойТест.epf"
                     }
