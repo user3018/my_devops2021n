@@ -92,6 +92,23 @@ pipeline
             }
         }
 
+        stage("АПК") {
+            steps {
+                script {
+                    try {
+                        //@call runner run --command "acc.propertiesPaths=D:\Anatoly\repo\devops2021n\tools\acc-export\acc.properties;" --execute "D:\Anatoly\repo\devops2021n\tools\acc-export\acc-export.epf" --ordinaryapp 1        
+                        //bat "chcp 65001\n vrunner vanessa"
+                        //bat "chcp 65001\n runner run --ibconnection /FC:/Train_04_20/Template/ACC --db-user \"\" --db-pwd \"\"  --command \"acc.catalog=${WORKSPACE};acc.propertiesPaths=./tools/acc-export/acc.properties;\" --execute \"./tools/acc-export/acc-export.epf\" --ordinaryapp=1"
+                        //bat "chcp 65001\n runner run --command \"acc.propertiesPaths=D:\\Anatoly\\repo\\devops2021n\\tools\\acc-export\\acc.properties;" --execute "D:\\Anatoly\\repo\\devops2021n\\tools\\acc-export\\acc-export.epf" --ordinaryapp 1
+                        bat "chcp 65001\n runner run --command \"acc.catalog=${WORKSPACE};acc.propertiesPaths=./tools/acc-export/acc.properties;\" --execute \"./tools/acc-export/acc-export.epf\" --ordinaryapp=1"
+                    }
+                    catch (Exception Exc) {
+                        currentBuild.result = 'UNSTABLE'                    
+                    }
+                }
+            }
+        }
+
     }
 }
 
