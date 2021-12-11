@@ -10,5 +10,7 @@
         "--ordinaryapp": "-1"
     },
      "xunit": {
+         "testsPath": "tests",
+         "--reportsxunit": "ГенераторОтчетаJUnitXML{build/tests/junit/junit.xml};ГенераторОтчетаAllureXMLВерсия2{build/tests/allure/allure.xml}"
     }
 }
