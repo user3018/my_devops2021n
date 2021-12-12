@@ -1,5 +1,5 @@
-before_script:
-  - CHCP 65001
+# проблемы с кодировкой
+# https://stackoverflow.com/questions/57131654/using-utf-8-encoding-chcp-65001-in-command-prompt-windows-powershell-window
 
 stages:
   - createBase
