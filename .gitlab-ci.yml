@@ -4,6 +4,9 @@ stages:
 
 ping:
   stage: ping1
+  only:
+    refs:
+      - develop
   tags:
     - OneS
   script:
@@ -11,6 +14,9 @@ ping:
 
 ping2:
   stage: ping2
+  only:
+    refs:
+      - main
   tags:
     - OneS
   script:
