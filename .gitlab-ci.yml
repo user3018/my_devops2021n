@@ -76,6 +76,31 @@ gitsync:
       junit:
         out/smoke/junit/*.xml
 
+Модульные тесты:
+  except:
+    - schedules
+  
+  stage: xUnit
+  variables:
+    GIT_STRATEGY: none # чтобы база не удалилась после "stage: createBase"
+  allow_failure: true # сборка продолжится даже в случае возникновения ошибки
+  only:
+    refs:
+      - develop
+  tags:
+    - OneS
+  script:
+    # - runner xunit
+    - vrunner compileepf tests tests
+    #copy /Y "D:\Anatoly\Bases\Курс DevOps\Тест_ПростойТест.epf" "D:\J\workspace\training\tests\Тест_ПростойТест.epf"
+    - runner xunit --settings ./env-tests.json
+  artifacts:
+    reports:
+      junit:
+        build/tests/junit/*.xml
+    paths:
+      - build/tests/allure
+
 Ванесса:
   except:
     - schedules
@@ -138,7 +163,7 @@ Allure:
   tags:
     - OneS
   script:
-    - allure generate out/syntax-check/allure out/smoke/allure build/tests/allure -c -o out/allure-result
+    - allure generate out/syntax-check/allure out/smoke/allure out/allure build/tests/allure -c -o out/allure-result
   artifacts:
     paths:
       - out/allure-result
