@@ -1,3 +1,6 @@
+before_script:
+  - CHCP 65001
+
 stages:
   - createBase
   - syntaxСheck
@@ -15,7 +18,6 @@ stages:
   tags:
     - OneS
   script:
-    - chcp 65001
     - vrunner init-dev --dt "D:\Anatoly\Bases\Курс DevOps\Backups\s_2021-12-11_2015.dt" --db-user Администратор --src src/cf"
 
 Синтаксический контроль:
