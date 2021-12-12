@@ -2,6 +2,7 @@
 # https://stackoverflow.com/questions/57131654/using-utf-8-encoding-chcp-65001-in-command-prompt-windows-powershell-window
 
 stages:
+  - gitsync
   - createBase
   - syntaxСheck
   - xUnit
@@ -10,7 +11,23 @@ stages:
   - Sonar
   - Allure
 
+gitsync:
+  stage: gitsync
+  only:
+    # refs:
+    #   - develop
+    - schedules
+  tags:
+    - OneS
+  script:
+    - gitsync sync -u ci-bot -p 12345 "D:\Anatoly\Bases\Курс DevOps\Storage" src/cf
+    - git push http://ci-bot:1234567X@ubuntu-virt/user3018/devops-training HEAD:develop
+
+
 Создание тестовой базы:
+  except:
+    - schedules
+  
   stage: createBase
   only:
     refs:
@@ -21,6 +38,9 @@ stages:
     - vrunner init-dev --dt "D:\Anatoly\Bases\Курс DevOps\Backups\s_2021-12-11_2015.dt" --db-user Администратор --src src/cf
 
 Синтаксический контроль:
+  except:
+    - schedules
+  
   stage: syntaxСheck
   variables:
     GIT_STRATEGY: none # чтобы база не удалилась после "stage: createBase"
@@ -37,6 +57,9 @@ stages:
         out/syntax-check/junit/junit.xml
 
 Дымовые тесты:
+  except:
+    - schedules
+  
   stage: xUnit
   variables:
     GIT_STRATEGY: none # чтобы база не удалилась после "stage: createBase"
@@ -54,6 +77,9 @@ stages:
         out/smoke/junit/*.xml
 
 Ванесса:
+  except:
+    - schedules
+  
   stage: vanessa
   variables:
     GIT_STRATEGY: none # чтобы база не удалилась после "stage: createBase"
@@ -67,6 +93,9 @@ stages:
     - runner vanessa
 
 АПК:
+  except:
+    - schedules
+  
   stage: ACC
   variables:
     GIT_STRATEGY: none # чтобы база не удалилась после "stage: createBase"
@@ -80,6 +109,9 @@ stages:
     - runner run --ibconnection /FD:/Anatoly/Bases/АПК --db-user="Администратор" --db-pwd="" --ordinaryapp=1 --command "acc.catalog=$env:CI_PROJECT_DIR;acc.propertiesPaths=./tools/acc-export/acc.properties;" --execute "./tools/acc-export/acc-export.epf"
 
 Сонар:
+  except:
+    - schedules
+  
   stage: Sonar
   variables:
     GIT_STRATEGY: none # чтобы база не удалилась после "stage: createBase"
@@ -93,6 +125,9 @@ stages:
     - D:\Anatoly\sonarscanner\bin\sonar-scanner -D sonar.login=b89b97f044bec3c32aa884f4940b6d2e78ac7bce -D sonar.projectVersion=$env:CI_BUILD_ID
 
 Allure:
+  except:
+    - schedules
+  
   stage: Allure
   variables:
     GIT_STRATEGY: none # чтобы база не удалилась после "stage: createBase"
