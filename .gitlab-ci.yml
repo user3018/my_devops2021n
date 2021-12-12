@@ -6,6 +6,7 @@ stages:
   - createBase
   - syntaxСheck
   - xUnit
+  - ModuleTests
   - vanessa
   - ACC
   - Sonar
@@ -80,7 +81,7 @@ gitsync:
   except:
     - schedules
   
-  stage: xUnit
+  stage: ModuleTests
   variables:
     GIT_STRATEGY: none # чтобы база не удалилась после "stage: createBase"
   allow_failure: true # сборка продолжится даже в случае возникновения ошибки
