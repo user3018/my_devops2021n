@@ -1,23 +1,130 @@
 stages:
-  - ping1
-  - ping2
+  - createBase
+  - syntaxСheck
+  - xUnit
+  - vanessa
+  - ACC
+  - Sonar
+  - Allure
 
-ping:
-  stage: ping1
+Создание тестовой базы:
+  stage: createBase
   only:
     refs:
       - develop
   tags:
     - OneS
   script:
-    - ping 8.8.8.8
+    - vrunner init-dev --dt "D:\Anatoly\Bases\Курс DevOps\Backups\s_2021-12-11_2015.dt" --db-user Администратор --src src/cf"
 
-ping2:
-  stage: ping2
+Синтаксический контроль:
+  stage: syntaxСheck
+  variables:
+    GIT_STRATEGY: none # чтобы база не удалилась после "stage: createBase"
   only:
     refs:
-      - main
+      - develop
   tags:
     - OneS
   script:
-    - ping 8.8.8.8
+    - vrunner syntax-check
+  artifacts:
+    reports:
+      junit:
+        out/syntax-check/junit/junit.xml
+
+Дымовые тесты:
+  stage: xUnit
+  variables:
+    GIT_STRATEGY: none # чтобы база не удалилась после "stage: createBase"
+  allow_failure: true # сборка продолжится даже в случае возникновения ошибки
+  only:
+    refs:
+      - develop
+  tags:
+    - OneS
+  script:
+    - runner xunit
+  artifacts:
+    reports:
+      junit:
+        out/smoke/junit/*.xml
+
+Ванесса:
+  stage: vanessa
+  variables:
+    GIT_STRATEGY: none # чтобы база не удалилась после "stage: createBase"
+  allow_failure: true # сборка продолжится даже в случае возникновения ошибки
+  only:
+    refs:
+      - develop
+  tags:
+    - OneS
+  script:
+    - runner vanessa
+
+АПК:
+  stage: ACC
+  variables:
+    GIT_STRATEGY: none # чтобы база не удалилась после "stage: createBase"
+  allow_failure: true # сборка продолжится даже в случае возникновения ошибки
+  only:
+    refs:
+      - develop
+  tags:
+    - OneS
+  script:
+    - runner run --ibconnection /FD:/Anatoly/Bases/АПК --db-user="Администратор" --db-pwd="" --ordinaryapp=1 --command "acc.catalog=$env:CI_PROJECT_DIR;acc.propertiesPaths=./tools/acc-export/acc.properties;" --execute "./tools/acc-export/acc-export.epf"
+
+Сонар:
+  stage: Sonar
+  variables:
+    GIT_STRATEGY: none # чтобы база не удалилась после "stage: createBase"
+  allow_failure: true # сборка продолжится даже в случае возникновения ошибки
+  only:
+    refs:
+      - develop
+  tags:
+    - OneS
+  script:
+    - D:\Anatoly\sonarscanner\bin\sonar-scanner -D sonar.login=b89b97f044bec3c32aa884f4940b6d2e78ac7bce -D sonar.projectVersion=$env:CI_BUILD_ID
+
+Allure:
+  stage: Allure
+  variables:
+    GIT_STRATEGY: none # чтобы база не удалилась после "stage: createBase"
+  allow_failure: true # сборка продолжится даже в случае возникновения ошибки
+  only:
+    refs:
+      - develop
+  tags:
+    - OneS
+  script:
+    - allure generate out/syntax-check/allure out/smoke/allure build/tests/allure -c -o out/allure-result
+  artifacts:
+    paths:
+      - out/allure-result
+
+# stages:
+#   - ping1
+#   - ping2
+
+# ping:
+#   stage: ping1
+#   only:
+#     refs:
+#       - develop
+#   tags:
+#     - OneS
+#   script:
+#     - ping 8.8.8.8
+
+# ping2:
+#   stage: ping2
+#   only:
+#     refs:
+#       - main
+#   tags:
+#     - OneS
+#  script:
+#    - ping 8.8.8.8
