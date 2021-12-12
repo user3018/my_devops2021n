@@ -18,7 +18,7 @@ stages:
   tags:
     - OneS
   script:
-    - D:\Anatoly\OneScript\bin\vrunner.bat init-dev --dt "D:\Anatoly\Bases\Курс DevOps\Backups\s_2021-12-11_2015.dt" --db-user Администратор --src src/cf
+    - vrunner init-dev --dt "D:\Anatoly\Bases\Курс DevOps\Backups\s_2021-12-11_2015.dt" --db-user Администратор --src src/cf
 
 Синтаксический контроль:
   stage: syntaxСheck
